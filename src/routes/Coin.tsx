@@ -5,6 +5,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -172,12 +173,20 @@ function Coin() {
   );
   const { isLoading: priceLoding, data: priceData } = useQuery<IPrice>(
     ["priceData", coinId],
-    () => fetchCoinPrice(`${coinId}`)
+    () => fetchCoinPrice(`${coinId}`),
+    {
+      refetchInterval: 5000,
+    }
   );
   const loading = infoLoding || priceLoding;
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {coinName ? coinName : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {coinName ? coinName : loading ? "Loading..." : infoData?.name}
@@ -194,11 +203,11 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>{priceData?.quotes.USD.ath_price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -221,7 +230,7 @@ function Coin() {
             </Tab>
           </Tabs>
           <Routes>
-            <Route path="chart" element={<Chart />} />
+            <Route path="chart" element={<Chart coinId={coinId!} />} />
             <Route path="priceData" element={<Price />} />
           </Routes>
         </>
