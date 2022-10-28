@@ -7,6 +7,20 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import { Helmet } from "react-helmet";
 
+const GoHome = styled.div`
+  display: block;
+  text-align: right;
+  font-size: 25px;
+  font-weight: 800;
+  margin: 10px;
+  a {
+    transition: 0.5s;
+  }
+  a:hover {
+    color: ${(props) => props.theme.accentColor};
+  }
+`;
+
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
@@ -14,7 +28,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,6 +201,9 @@ function Coin() {
           {coinName ? coinName : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <GoHome>
+        <Link to={"/"}>Coins</Link>
+      </GoHome>
       <Header>
         <Title>
           {coinName ? coinName : loading ? "Loading..." : infoData?.name}
@@ -231,7 +248,7 @@ function Coin() {
           </Tabs>
           <Routes>
             <Route path="chart" element={<Chart coinId={coinId!} />} />
-            <Route path="priceData" element={<Price />} />
+            <Route path="priceData" element={<Price coinId={coinId!} />} />
           </Routes>
         </>
       )}
