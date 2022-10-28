@@ -29,11 +29,15 @@ function Chart({ coinId }: CharProps) {
         "Loding..."
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "Price",
-              data: data?.map((e) => e.close) as number[],
+              data:
+                data?.map((e) => ({
+                  x: new Date(Number(e.time_close) * 1000).toISOString(),
+                  y: [e.open, e.high, e.low, e.close],
+                })) ?? [],
             },
           ]}
           options={{
@@ -46,16 +50,10 @@ function Chart({ coinId }: CharProps) {
               toolbar: { show: false },
             },
             tooltip: { y: { formatter: (e) => `$ ${e.toFixed(2)}` } },
-            stroke: {
-              curve: "smooth",
-            },
             grid: { show: false },
             yaxis: { show: false },
             xaxis: {
               type: "datetime",
-              categories: data?.map((e) =>
-                new Date(Number(e.time_close) * 1000).toISOString()
-              ),
               axisTicks: { show: false },
               labels: { show: false },
             },
