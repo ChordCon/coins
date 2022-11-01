@@ -1,7 +1,11 @@
 import React from "react";
-import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./theme";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "./atoms";
+import styled from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
@@ -65,13 +69,40 @@ a {
   color: inherit
 }
 `;
+const Container = styled.div`
+  max-width: 480px;
+  margin: 0 auto;
+`;
+
+const ChangTheme = styled.button`
+  position: absolute;
+  margin: 1px 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px;
+  transition: 0.5s;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+  }
+`;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDark = useSetRecoilState(isDarkAtom);
+  const toggleTheme = () => setDark((prev) => !prev);
+
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Container>
+          <ChangTheme onClick={() => toggleTheme()}>Change Theme</ChangTheme>
+          <Router />
+        </Container>
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }

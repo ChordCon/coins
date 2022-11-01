@@ -14,6 +14,7 @@ const GoHome = styled.div`
   font-weight: 800;
   margin: 10px;
   a {
+    color: ${(props) => props.theme.textColor};
     transition: 0.5s;
   }
   a:hover {
@@ -51,6 +52,7 @@ const Overview = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
+  color: ${(props) => props.theme.textColor};
 `;
 const OverviewItem = styled.div`
   display: flex;
