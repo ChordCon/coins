@@ -71,7 +71,7 @@ function Price({ coinId }: PriceProps) {
             },
           ]}
           options={{
-            colors: ["#FFE12E"],
+            colors: ["#9c88ff"],
             theme: { mode: "dark" },
             chart: {
               background: "transparent",
@@ -94,7 +94,7 @@ function Price({ coinId }: PriceProps) {
               floating: true,
               align: "center",
               style: {
-                color: "#FFE12E",
+                color: "#9c88ff",
                 fontSize: "20",
               },
             },
